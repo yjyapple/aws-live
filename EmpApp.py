@@ -1,4 +1,3 @@
-import pymysql
 from flask import Flask, render_template, request
 from pymysql import connections
 import os
@@ -80,6 +79,21 @@ def AddEmp():
 
     print("all modification done...")
     return render_template('AddEmpOutput.html', name=emp_name)
+   
+
+
+   
+@app.route("/fetchdata", methods=['POST'])
+def fetchdata():
+    select_employee_query = "SELECT emp_id,first_name,last_name,pri_skill,location FROM employee"
+    with connections.cursor() as cursor:
+    cursor.execute(select_employee_query)
+    result = cursor.fetchall()
+    for row in result:
+        print(row)
+    return render_template('GetEmpOutput.html', id=emp_id, fname=first_name, lname=last_name, interest=pri_skill, location=location)
+
+
 
 
 if __name__ == '__main__':
